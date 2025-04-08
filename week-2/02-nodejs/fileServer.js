@@ -17,35 +17,40 @@ const fs = require('fs');
 const path = require('path');
 const app = express();
 
-app.listen(3000, () => {
-  console.log("Server is running");
-})
+// app.listen(3000, () => {
+//   console.log("Server is running");
+// })
+
+const filesDir = path.join(__dirname, "files");
 
 app.get("/files", (req, res) => {
-  const folderPath = path.join(__dirname, "files");
-  fs.readdir(folderPath, (err, files) => {
+  fs.readdir(filesDir, (err, files) => {
     if (err) {
-      console.log(err);
+      return res.status(500).send('Internal Server Error');
     }
     else {
-      res.json(files);
+      res.status(200).json(files);
     }
   })
 })
 
-app.get("/files/a.txt", (req, res) => {
-  const filePath = path.join(__dirname, "files", "a.txt");
+app.get("/files/:filename", (req, res) => {
+  const filePath = path.join(filesDir, req.params.filename);
 
   fs.readFile(filePath,"utf-8", (err, data) => {
     if (err) {
-      console.log(err);
-      res.status(404).json({ msg: 'File not found' });
+      return res.status(404).send('File not found');
     }
     else {
       res.status(200).send(data);
     }
   })
 })
+
+// Fallback for invalid routes
+app.use((req, res) => {
+  res.status(404).send('Route not found');
+});
 
 module.exports = app;
 
