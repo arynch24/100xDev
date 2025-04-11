@@ -12,6 +12,33 @@ const app = express();
 // clears every one second
 
 let numberOfRequestsForUser = {};
+
+app.listen(3000,()=>{
+  console.log("Server is Running...");
+})
+
+app.use((req,res,next)=>{
+  const userID = req.headers["user-id"];
+  //if user id is present in the object
+  if(numberOfRequestsForUser[userID]){
+    numberOfRequestsForUser[userID]++;
+
+    if(numberOfRequestsForUser[userID]>5){
+      res.status(404).send("You are Blocked");
+    }
+    else{
+      next();
+    }
+  }
+
+  //else create one
+  else{
+    numberOfRequestsForUser[userID]=1;
+    next();
+  }
+})
+
+//every after a second the object clears out
 setInterval(() => {
     numberOfRequestsForUser = {};
 }, 1000)
