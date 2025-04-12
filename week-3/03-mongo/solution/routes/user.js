@@ -36,8 +36,8 @@ router.post('/courses/:courseId', userMiddleware, async(req, res) => {
     await User.updateOne({
         username: username
     }, {
-        "$push": {
-            purchasedCourses: courseId
+        purchasedCourse:{
+            "$push":courseId
         }
     })
     res.json({
