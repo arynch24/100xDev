@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interest Calculator</title>
+</head>
+
+<body>
+
+    <div>
+        <p>Principal Amount</p>
+        <input type="number" id="principal" placeholder="Enter principal amount">
+        <p>Rate of Interest</p>
+        <input type="number" id="rate" placeholder="Enter rate of interest">
+        <p>Time</p>
+        <input type="number" id="time" placeholder="Enter time in years">
+
+        <button id="calculate">Calculate</button>
+
+        <p id="output"></p>
+    </div>
+
+    <script>
+        const button = document.getElementById("calculate");
+        const output = document.getElementById("output");
+
+        button.addEventListener("click", () => {
+            const principal = Number(document.getElementById("principal").value);
+            const rate = Number(document.getElementById("rate").value);
+            const time = Number(document.getElementById("time").value);
+
+            
+            fetch(`http://localhost:3000/interest?principal=${principal}&rate=${rate}&time=${time}`)
+                .then((res) => res.json())
+                .then((data) => {
+                    const interest = data.interest;
+                    const total = data.total;
+                    output.innerHTML = `The interest is ${interest} and the total amount is ${total}`;
+                })
+                .catch((error) => {
+                    output.innerHTML = "Something went wrong!";
+                    console.error(error);
+                });
+        });
+    </script>
+
+</body>
+
+</html>
