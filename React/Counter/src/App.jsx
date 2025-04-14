@@ -17,6 +17,8 @@ function App() {
       })
   }
 
+
+  //Empty dependencing means it would only execute once when the component renders.
   useEffect(() => {
     fetchTodos();
   }, [])
@@ -41,8 +43,6 @@ function App() {
     setDesc("");
     setTitle("");
   };
-
-
 
   return (
     <>
