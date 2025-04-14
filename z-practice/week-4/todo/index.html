@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+
+<body>
+    <input type="text" id="todo-input" placeholder="Add a new task">
+    <input type="text" id="todo-desc" placeholder="Add a Description">
+
+    <button>Add Todo</button>
+
+    <ul id="list">Tasks to do</ul>
+</body>
+<script>
+
+    const button = document.querySelector("button");
+
+    function markAsRead(id) {
+        document.getElementById(id).innerHTML = "Done";
+    }
+
+    button.addEventListener("click", () => {
+        const task = document.getElementById("todo-input").value;
+        const desc = document.getElementById("todo-desc").value;
+        const list = document.getElementById("list");
+
+        const listItem = document.createElement("li");
+        listItem.innerHTML = `<strong>${task}</strong><br>${desc}`;
+
+        const MarkButton = document.createElement("button");
+        MarkButton.innerHTML = "Mark as Done";
+        MarkButton.addEventListener("click",()=>{
+            MarkButton.innerHTML="Done";
+        })
+
+        list.appendChild(listItem);
+        list.appendChild(MarkButton);
+
+        document.getElementById("todo-input").value = "";
+        document.getElementById("todo-desc").value = "";
+    })
+</script>
+
+</html>
