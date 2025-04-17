@@ -28,7 +28,6 @@ function Counter() {
   )
 }
 
-
 function Increment() {
   const { count, setCount } = useContext(CounterContext);
   return (
