@@ -9,6 +9,7 @@ const JWT_SECRET = "test123";
 const app = express();
 app.use(cookieParser());
 app.use(express.json());
+//this is for sending request
 app.use(cors({
     credentials: true,
     origin: "http://localhost:5173"
@@ -22,9 +23,22 @@ app.post("/signin", (req, res) => {
         id: 1
     }, JWT_SECRET);
     //what this does is that it store the token in request header of the browser as 
-    //token : hsihfshffskhfs .kjhifhflk
+    //token : hsihfshffskhfs .kjhifhflk innside cookies
     //earlier we use to send it to the client and their we would store it in the local storage and if any further request is send from the client it send the token inside the haeder together with the request to verify the user.
-    res.cookie("token", token);
+    res.cookie("token", token, {
+        httpOnly: true,
+        //samesite attribute take cares of cookies to send in request header or not
+        sameSite: "lax"
+    });
+
+    //we can define so many things init
+    // res.cookie('token', 'your_token_here', {
+    //     domain: 'example.com',   // ✅ Only this domain and its subdomains can access
+    //     httpOnly: true,
+    //     secure: true,
+    //     sameSite: 'Lax', // or 'None' depending on your case
+    //     maxAge: 24 * 60 * 60 * 1000 // 1 day
+    //   });
     res.send("Logged in!");
 });
 

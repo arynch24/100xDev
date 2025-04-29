@@ -1,14 +1,34 @@
-import React, { use, useState, useContext } from 'react';
+import React, { use, useState, useContext, useEffect } from 'react';
 import { CounterContext } from './Context';
 
 function App() {
   const [count, setCount] = useState(0);
 
+  const [user, setUser] = useState("kuch nhi hai");
+  useEffect(() => {
+    const fetchUser = async () => {
+      const res = await fetch("http://localhost:3000/user", {
+        method: "GET",
+        credentials: "include", // <-- Correct place to put withCredentials
+      });
+      const data = await res.json(); // <-- await this
+      setUser(data.id); // assuming your API returns { id: ... }
+    };
+
+    fetchUser();
+  }, []);
+
   return (
     <>
-      <CounterContext.Provider value={{ count, setCount }}>
+      {/* <CounterContext.Provider value={{ count, setCount }}>
         <Counter />
-      </CounterContext.Provider>
+      </CounterContext.Provider> */}
+      <div>
+        User ID: {user}
+      </div>
+
+      <a href="http://localhost:5173/user">Link to users</a>
+
     </>
   )
 }
